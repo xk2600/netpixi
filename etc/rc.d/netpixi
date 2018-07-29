@@ -1,0 +1,78 @@
+#!/bin/sh
+#
+# PROVIDE: netpixi
+# REQUIRE: DAEMON
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf to enable netpixi:
+#
+# netpixi_enable (bool):	Set it to "YES" to enable netpixi. Default is "NO".
+# netpixi_conf (path):		Set full path to configuration file.
+#				Default is "/usr/local/etc/netpixi.conf".
+# netpixi_pidfile (path):	Set full path to pid file.
+#				Default is "/var/run/netpixi.pid".
+
+. /etc/rc.subr
+
+name="netpixi"
+rcvar=netpixi_enable
+
+load_rc_config $name
+
+: ${netpixi_enable="NO"}
+: ${netpixi_pidfile="/var/run/${name}.pid"}
+
+netpixi_conf="/usr/local/etc/netpixi.conf"
+
+command=/usr/local/sbin/lighttpd
+stop_postcmd=stop_postcmd
+restart_precmd="netpixi_checkconfig"
+graceful_precmd="netpixi_checkconfig"
+graceful_cmd="netpixi_graceful"
+gracefulstop_cmd="netpixi_gracefulstop"
+configtest_cmd="netpixi_checkconfig"
+extra_commands="reload graceful gracefulstop configtest"
+command_args="-f ${netpixi_conf}"
+pidfile=${netpixi_pidfile}
+required_files=${netpixi_conf}
+
+netpixi_checkconfig()
+{
+	echo "Performing sanity check on ${name} configuration:"
+	eval "${command} ${command_args} -t"
+}
+
+netpixi_gracefulstop()
+{
+	echo "Stopping ${name} gracefully."
+	sig_reload="INT"
+	run_rc_command reload
+}
+
+netpixi_graceful()
+{
+	netpixi_gracefulstop
+	rm -f ${pidfile}
+	run_rc_command start
+}
+
+netpixi_run_instance()
+{
+	_i="$1"
+	_rcmd="$2"
+	name=${_orig_name}_${_i}
+	eval ${name}_enable=${netpixi_enable}
+	eval netpixi_conf=\"\${netpixi_${_i}_conf:-"/usr/local/etc/netpixi/${_i}.conf"}\"
+	eval netpixi_pidfile=\"\${netpixi_${_i}_pidfile:-"/var/run/netpixi_${_i}.pid"}\"
+	command_args="-f ${netpixi_conf}"
+	pidfile=${netpixi_pidfile}
+	required_files=${netpixi_conf}
+	run_rc_command ${_rcmd}
+}
+
+stop_postcmd()
+{
+	rm -f ${pidfile}
+}
+
+run_rc_command "$1"

@@ -1,0 +1,27 @@
+#!/usr/local/bin/tclsh
+
+# SERVER_ADDR 0.0.0.0 
+# DOCUMENT_ROOT /usr/local/www/data/ 
+# GATEWAY_INTERFACE CGI/1.1 
+# SERVER_PORT 80 
+# HTTP_HOST 192.168.0.145 
+# REDIRECT_STATUS 200 
+# REMOTE_ADDR 192.168.254.2 
+# HTTP_CONNECTION Keep-Alive 
+# SERVER_NAME 192.168.0.145 
+# SERVER_PROTOCOL HTTP/1.1 
+# REQUEST_URI /getEnvironment.tcl 
+# REMOTE_PORT 63790 
+# SERVER_SOFTWARE lighttpd/1.4.39 
+# REQUEST_METHOD GET 
+# HTTP_USER_AGENT cisco-IOS 
+# CONTENT_LENGTH 0 
+# HTTP_DATE {Tue, 06 Aug 2019 10:54:15 GMT} 
+# SCRIPT_NAME /getEnvironment.tcl 
+# SCRIPT_FILENAME /usr/local/www/data/getEnvironment.tcl
+
+
+# $env(REMOTE_ADDR) ;# ipaddress of client
+# $env(DOCUMENT_ROOT)
+puts "test!"
+puts "[array get env]"

@@ -1,0 +1,19 @@
+!
+hostname boostrapping
+!
+username provisioner priviledge 15 secret theone2work4
+!
+event manager directory user repository tftp://192.168.1.255/lib/tcl
+event manager applet startup trap
+ description "Run on startup -- remember this can't run too long or IOS will kill it."
+ event none
+ action 1.0 cli command "tclsh tftp://192.168.1.255/lib/tcl/bootstrap.tcl"
+!
+interface GigabitEthernet0
+ description Management
+ ip address dhcp
+!
+file prompt quiet
+!
+snmp-server community provisioner RO
+!
