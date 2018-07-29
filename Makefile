@@ -131,14 +131,14 @@ remote: ${PKG_CAROOT}
 	  TMPDIR=`mktemp` ; \
 	  cd $${TMPDIR} ; \
 	  while [ 1 == 1 ] ; \
-	    do
-	      printf "       (y,n) " ; read Q
-	      [ "x${Q}x" == "xyx" ] && break
-	      [ "x${Q}x" == "xnx" ] && quit -1
-	      printf "...Not an option.\n Again, "
-	    done
-	  
-	  fetch -qo -  https://raw.githubusercontent.com/xk2600/netpixi/master/Makefile | REPO=$${REPO} make -f - install; \
+	    do \
+	      printf "       (y,n) " ; read Q ; \
+	      [ "x${Q}x" == "xyx" ] && break ; \
+	      [ "x${Q}x" == "xnx" ] && quit -1 ; \
+	      printf "...Not an option.\n Again, " ; \
+	    done ; \
+	  \
+	  fetch -qo -  https://raw.githubusercontent.com/xk2600/netpixi/master/Makefile | REPO=$${REPO} make -f - install ; \
 	  REPO=$${REPO} make install ; \
 	  rm -Rf $${TMPDIR} ; \
 	}
