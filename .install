@@ -1,0 +1,16 @@
+#!/bin/sh
+[ "x`whoami`x" == "xrootx" ] || { echo "must be root. please try again..." ; exit -1 ; }
+
+# determine where we should setup local repo?
+while [ 1 == 1 ]
+ do
+  printf "Where would you like keep the local copy of the repo? (~) " ; read REPO
+  [ "x${REPO}x" == "xx" ] && REPO="~"
+  [ -d ${REPO} ] && break || { echo "${REPO} is not a directory or does not exist." ; }
+ done
+
+TMPDIR=`mktemp`
+cd ${TMPDIR}
+fetch https://raw.githubusercontent.com/xk2600/netpixi/master/Makefile
+REPO=${REPO} make install
+rm -Rf ${TMPDIR}
