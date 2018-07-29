@@ -1,12 +1,25 @@
-# netpixi
-Advanced PXE appliance for network device staging and deployment.
 # NETPIXI -
 *Copyright 2019, Christopher M. Stephan - See [LICENSE](License.txt) for further information.*
+
+Advanced PXE appliance for network device staging and deployment.
+
+## Installation
+
+Stupid simple method:
+
+    **Verify Signature**
+    fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | sha256
+    5353af61d147baa1c8e857db9f0ab190863e51e0bbb00fbc2b8628e82405e3bc
+
+    **Execute**
+    fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh
 
 ## Filesystem Mapping
 
 Application Root at /usr/local/www/netpixi/
 
+| Path             | Description                    |
+|------------------|--------------------------------|
 | ./bin/           | CGI scripts (written in TCL)   |
 | ./bootstrap/     | TFTP Root Directory            |
 | ./data/          | Static content for Web Service |
