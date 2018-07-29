@@ -1,3 +1,12 @@
+
+### NOTES:
+#
+# Quick install:
+#     /usr/bin/pkg install ca_root_nss
+#     /usr/bin/fetch -qo - https://git.io/fj7oc | /usr/bin/make -f - remote
+# 
+# 
+
 PREFIX		=  "/usr/local"
 DIR_NETPIXI	=  "/opt/netpixi"
 
@@ -9,6 +18,7 @@ CONF_RC		=  "etc/rc.conf"
 RCD_NETPIXI	=  "etc/rc.d/netpixi"
 
 PKG_BOOTSTRAP	=  "/var/db/pkg/FreeBSD.meta"
+PKG_CAROOT      =  "/etc/ssl/cert.pem"
 PKG_SUDO	=  "${PREFIX}/bin/sudo"
 PKG_LIGHTTPD	=  "${PREFIX}/bin/lighttpd"
 PKG_NETSNMP	=  "${PREFIX}/bin/snmpget"
@@ -20,13 +30,24 @@ REMOTE_REPO	=  "https://github.com/xk2600/netpixi.git"
 ### USE HOME DIRECTORY FOR REPO STORAGE IF NOT DEFINED PRIOR TO ENTRY.
 REPO		?= "~/src"
 
+#### INITIAL TARGETS ##########################################################
+
 all:
-	echo no builds required. please 'make install' as root.
+	# DEFAULT MAKE
+	[ "x`whoami`x" != "xrootx" ] && echo error: requires root. && exit -1
+	echo no builds required. 'make remote' or 'make install'
+
+
+
+################################################ END INITIAL TARGETS ##########
 
 #### INSTALL PACKAGES #########################################################
 
 ${PKG_BOOTSTRAP}:
 	env ASSUME_ALWAYS_YES=YES pkg bootstrap
+
+${PKG_CAROOT}:
+	pkg install ca_root_nss
 
 ${PKG_SUDO}: ${PKG_BOOTSTRAP}
 	pkg install sudo
@@ -89,9 +110,39 @@ create-symlinks: ${PREFIX}/www/netpixi
 	ln -s ${DIR_NETPIXI}/${RCD_NETPIXI}  /${PREFIX}/${RCD_NETPIXI}
 	
 
+	
 install: install-packages install-netpixi create-symlinks
 	git remote add upstream https://github.com/xk2600/netpixi.git
 
+remote: ${PKG_CAROOT}
+	# CALL REMOTE INSTALL SCRIPT... WHICH REALLY JUST EXECUTES THIS MAKEFILE AGAIN
+	# AFTER GRABBING THE MOST RECENT VERSION. 
+	#fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh	
+	# INSTEAD OF FETCH, JUST DO IT INLINE:
+	{ \
+	  [ "x`whoami`x" == "xrootx" ] || { echo "must be root. please try again..." ; exit -1 ; } ; \
+	  while [ 1 == 1 ] ; \
+	   do \
+	    printf "Where would you like keep the local copy of the repo? (~) " ; read REPO ; \
+	    [ "x$${REPO}x" == "xx" ] && REPO="~" ; \
+	    [ -d $${REPO} ] && break || { echo "$${REPO} is not a directory or does not exist." ; } ; \
+	   done ; \
+	  \
+	  TMPDIR=`mktemp` ; \
+	  cd $${TMPDIR} ; \
+	  while [ 1 == 1 ] ; \
+	    do
+	      printf "       (y,n) " ; read Q
+	      [ "x${Q}x" == "xyx" ] && break
+	      [ "x${Q}x" == "xnx" ] && quit -1
+	      printf "...Not an option.\n Again, "
+	    done
+	  
+	  fetch -qo -  https://raw.githubusercontent.com/xk2600/netpixi/master/Makefile | REPO=$${REPO} make -f - install; \
+	  REPO=$${REPO} make install ; \
+	  rm -Rf $${TMPDIR} ; \
+	}
+	
 update:
 	git pull upstream master
 
