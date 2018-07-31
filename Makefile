@@ -73,11 +73,11 @@ install: is-root output-vars
 	-git clone ${REMOTE_REPO} ${REPO}
 	@echo 
 	@echo
-	-cp -R   ${REPO}/bootstrap ${DIR_NETPIXI}
-	-cp -R   ${REPO}/db        ${DIR_NETPIXI}
-	-cp -R   ${REPO}/doc       ${DIR_NETPIXI}
-	-cp -R   ${REPO}/etc       ${DIR_NETPIXI}
-	-cp -R   ${REPO}/www       ${DIR_NETPIXI}
+	-cp -R   ${REPO}/netpixi/bootstrap ${DIR_NETPIXI}
+	-cp -R   ${REPO}/netpixi/db        ${DIR_NETPIXI}
+	-cp -R   ${REPO}/netpixi/doc       ${DIR_NETPIXI}
+	-cp -R   ${REPO}/netpixi/etc       ${DIR_NETPIXI}
+	-cp -R   ${REPO}/netpixi/www       ${DIR_NETPIXI}
 
 	
 	# CREATE WEB INTERFACE SYMLINKS
