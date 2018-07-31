@@ -118,9 +118,8 @@ install: is-root output-vars
 ################################################ END NETPIXI INSTALLATION #####
 
 .PHONY: update
-update:
-	cd ${DIR_NETPIXI}
-	git pull
+update: 
+	cd ${DIR_NETPIXI} ; git pull
 
 .PHONY: uninstall-packages
 uninstall-packages:
@@ -130,7 +129,7 @@ uninstall-packages:
 	-env ASSUME_ALWAYS_YES=YES pkg remove ca_root_nss sudo git lighttpd net-snmp tcl86 tcllib
 
 .PHONY: uninstall
-uninstall: uninstall-packages
+uninstall:
 	
 	# INSTALL NETPIXI TO CORRECT PATH
 	@echo
