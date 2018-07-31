@@ -58,25 +58,25 @@ repo-defined:
 #### INSTALL PACKAGES #########################################################
 
 ${PKG_CAROOT}:
-	echo pkg required: ca_root_nss
+	@echo pkg required: ca_root_nss
 
 ${PKG_SUDO}: 
-	echo pkg required: sudo
+	@echo pkg required: sudo
 
 ${PKG_GIT}: 
-	echo pkg required: git
+	@echo pkg required: git
 
 ${PKG_LIGHTTPD}: 
-	echo pkg required: lighttpd
+	@echo pkg required: lighttpd
 
 ${PKG_NETSNMP}: 
-	echo pkg required: net-snmp
+	@echo pkg required: net-snmp
 
 ${PKG_TCL}: 
-	echo pkg required: tcl86
+	@echo pkg required: tcl86
 
 ${PKG_TCLLIB}: 
-	echo pkg required: tcllib
+	@echo pkg required: tcllib
 
 .PHONY: install-packages
 install-packages: ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TCLLIB}
