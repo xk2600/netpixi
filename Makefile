@@ -71,7 +71,14 @@ install: is-root output-vars
 	@echo
 	@echo ****************************************************
 	-git clone ${REMOTE_REPO} ${REPO}
-	-cp -R ${REPO}/* ${DIR_NETPIXI}
+	@echo 
+	@echo
+	-cp -R   ${REPO}/bootstrap ${DIR_NETPIXI}
+	-cp -R   ${REPO}/db        ${DIR_NETPIXI}
+	-cp -R   ${REPO}/doc       ${DIR_NETPIXI}
+	-cp -R   ${REPO}/etc       ${DIR_NETPIXI}
+	-cp -R   ${REPO}/www       ${DIR_NETPIXI}
+
 	
 	# CREATE WEB INTERFACE SYMLINKS
 	@echo 
