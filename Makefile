@@ -33,23 +33,22 @@ REMOTE_REPO	=  https://github.com/xk2600/netpixi.git
 .PHONY: all
 all:
 	# DEFAULT MAKE
-	echo no builds required. 'make remote' or 'make install'
+	@echo no builds required. 'make remote' or 'make install'
 	
 .PHONY: is-root
 is-root:
-	[ "x`whoami`x" == "xrootx" ] || echo must be root.  
-
-.PHONY: continue
-continue:
-	while [ 1 == 1 ] ;  do echo "Continue? (y,n) " ; read Q ; \
-	  [ "x$${Q}x" == "xyx" ] && break ; [ "x$${Q}x" == "xnx" ] && quit -1 ; echo ...Not an option. Again, ; done ; \
+	@test [ "x`whoami`x" == "xrootx" ] || echo must be root.
 
 .PHONY: repo-defined
 repo-defined:
 .ifndef REPO
-	while [ 1 == 1 ] ; do echo "Repository Location? (~) " ; read REPO ; \
-	  [ "x$${REPO}x" == "xx" ] && REPO="~" ; [ -d $${REPO} ] && break || echo $${REPO} is not a directory or does not exist. ; \
-	done ; \
+	@while [ 1 == 1 ] ; \
+	 do \
+	  echo "Repository Location? (~) " ; \
+	  read REPO ; \
+	  [ "x$${REPO}x" == "xx" ] && REPO="~" ; \
+	  [ -d $${REPO} ] && break || echo "$${REPO} is not a directory or does not exist." ; \
+	 done ; \
 	/usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote ; \
 	exit 0
 .endif
@@ -62,7 +61,7 @@ repo-defined:
 pkg-header:
 	echo
 	echo ***********************************************************
-	echo ******* Installing Packages: 
+	echo ******* Checking Packages: 
 
 ${PKG_BOOTSTRAP}
 	env ASSUME_ALWAYS_YES=YES pkg bootstrap
@@ -90,22 +89,22 @@ ${PKG_TCLLIB}: ${PKG_BOOTSTRAP}
 
 .PHONY: install-packages
 install-packages: pkg-header ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TCLLIB}
-	echo 
-	echo ******* Packages installed 
-	echo ***********************************************************
+
 ################################################ END INSTALL PACKAGES #########
 
 #### NETPIXI INSTALLATION #####################################################
 
 .PHONY: netpixi-header
 netpixi-header:
-	echo 
-	echo ***********************************************************
-	echo ******* Installing netPixi: 
+	@echo 
+	@echo ***********************************************************
+	@echo ******* Installing netPixi: 
 
 ${PREFIX}/www/netpixi:
-	# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
-	mkdir -p ${PREFIX}/www/netpixi/
+	dd# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
+	@echo 
+	@echo >>>> linkin ${PREFIX}/www/netpixi/{bin,data}...
+	@mkdir -p ${PREFIX}/www/netpixi/
 	ln -s ${DIR_NETPIXI}/netpixi/bin  ${PREFIX}/www/netpixi/bin
 	ln -s ${DIR_NETPIXI}/netpixi/data ${PREFIX}/www/netpixi/data
 
@@ -138,7 +137,7 @@ install-netpixi: ${DIR_NETPIXI}
 	echo >>>> ${.target}: 
 	ln -s ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
 
-/${PREFIX}/${CONF_NETPIXI}:
+/${PREFIX}/${RCD_NETPIXI}:
 	ln -s ${DIR_NETPIXI}/${RCD_NETPIXI}  /${PREFIX}/${RCD_NETPIXI}
 
 .PHONY: create-symlinks
@@ -182,7 +181,7 @@ ${REPO}/netpixi:
 	@echo "${REPO}/netpixi: "
 	git clone ${REMOTE_REPO}
 
-remote: is-root repo-defined ${PKG_CAROOT} ${PKG_GIT} ${REPO}/netpixi
+remote: is-root repo-defined fetch-repo-header ${PKG_CAROOT} ${PKG_GIT} ${REPO}/netpixi
 	# CALL REMOTE INSTALL SCRIPT... WHICH REALLY JUST EXECUTES THIS MAKEFILE AGAIN
 	# AFTER GRABBING THE MOST RECENT VERSION. 
 	#fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh	
