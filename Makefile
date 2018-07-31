@@ -34,7 +34,13 @@ REMOTE_REPO	=  https://github.com/xk2600/netpixi.git
 .PHONY: all
 all:
 	# DEFAULT MAKE
-	@echo no builds required. 'make remote' or 'make install'
+	@echo no build required.
+	@echo
+	@echo   syntax: make [target]
+	@echo
+	@echo         target: install, install-packages, 
+	@echo                 uninstall, uninstall-packages
+	@echo                 update
 	
 .PHONY: is-root
 is-root:
