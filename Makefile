@@ -35,12 +35,25 @@ all:
 is-root:
 	@test [ "x`whoami`x" == "xrootx" ] || echo must be root.
 
+.PHONY: output-vars
+output-vars:
+	@echo REPO         = ${REPO}
+	@echo PREFIX	   = ${PREFIX}
+	@echo DIR_NETPIXI  = ${DIR_NETPIXI}
+	@echo CONF_INETD   = ${CONF_INETD}
+	@echo CONF_DHCPD   = ${CONF_DHCPD}
+	@echo CONF_NETPIXI = ${CONF_NETPIXI}
+	@echo CONF_RC      = ${CONF_RC}
+	@echo RCD_NETPIXI  = ${RCD_NETPIXI}
+	@echo REMOTE_REPO  = ${REMOTE_REPO}
+
+
 ################################################ END GENERIC TARGETS ##########
 
 #### NETPIXI INSTALLATION #####################################################
 
 .PHONY: install
-install: is-root
+install: is-root output-vars
 	# INSTALL DEPENDANT PACKAGES USING PKG
 	@echo
 	@echo ****************************************************
