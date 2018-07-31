@@ -36,11 +36,11 @@ all:
 	# DEFAULT MAKE
 	@echo no build required.
 	@echo
-	@echo   syntax: make [target]
+	@echo "  syntax: make [target]"
 	@echo
-	@echo         target: install, install-packages, 
-	@echo                 uninstall, uninstall-packages
-	@echo                 update
+	@echo "        target: install, install-packages,"
+	@echo "                uninstall, uninstall-packages,"
+	@echo "                update"
 	
 .PHONY: is-root
 is-root:
