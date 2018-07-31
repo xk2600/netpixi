@@ -65,7 +65,7 @@ install: is-root output-vars
 	@echo ****************************************************
 	-mkdir -p ${REPO}
 	-mkdir -p ${DIR_NETPIXI}
-	-mkdir -p ${DIR_NETPIXI}/log
+	-mkdir -p /var/log/netpixi/
 	-mkdir -p ${PREFIX}/www/netpixi/
 	
 	# CLONE REPO, COPY NECESSARY FILES TO INSTALL AREA.
@@ -105,7 +105,7 @@ install: is-root output-vars
 	-ln -s   ${DIR_NETPIXI}/bootstrap       /tftpboot
 	
 	# CREATE LOG DIRECTORY SYMLINK
-	-ln -s   ${DIR_NETPIXI}/log             /var/log/netpixi
+	-ln -s   /var/log/netpixi               ${DIR_NETPIXI}/log
 	
 	@echo
 	@echo Add the following lines to your rc.conf:
@@ -148,8 +148,3 @@ uninstall:
 	-rm /${PREFIX}/${RCD_NETPIXI}
 	-rm /tftpboot ;
 	
-	@echo Add the following lines to your rc.conf:
-	@echo
-	@cat ${DIR_NETPIXI}/${CONF_RC}
-	@echo
-
