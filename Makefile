@@ -63,28 +63,26 @@ pkg-header:
 	echo ***********************************************************
 	echo ******* Checking Packages: 
 
-${PKG_BOOTSTRAP}
-	env ASSUME_ALWAYS_YES=YES pkg bootstrap
 
 ${PKG_CAROOT}:
 	echo pkg required: ca_root_nss
 
-${PKG_SUDO}: ${PKG_BOOTSTRAP}
+${PKG_SUDO}: 
 	echo pkg required: sudo
 
-${PKG_GIT}: ${PKG_BOOTSTRAP}
+${PKG_GIT}: 
 	echo pkg required: git
 
-${PKG_LIGHTTPD}: ${PKG_BOOTSTRAP}
+${PKG_LIGHTTPD}: 
 	echo pkg required: lighttpd
 
-${PKG_NETSNMP}: ${PKG_BOOTSTRAP}
+${PKG_NETSNMP}: 
 	echo pkg required: net-snmp
 
-${PKG_TCL}: ${PKG_BOOTSTRAP}
+${PKG_TCL}: 
 	echo pkg required: tcl86
 
-${PKG_TCLLIB}: ${PKG_BOOTSTRAP}
+${PKG_TCLLIB}: 
 	echo pkg required: tcllib
 
 .PHONY: install-packages
