@@ -144,7 +144,8 @@ create-symlinks: ${PREFIX}/www/netpixi
 	@echo
 
 	
-install: install-packages install-netpixi create-symlinks
+#install: install-packages install-netpixi create-symlinks
+install: install-netpixi create-symlinks
 
 ################################################ END NETPIXI INSTALLATION #####
 
