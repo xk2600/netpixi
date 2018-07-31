@@ -65,6 +65,7 @@ install: is-root output-vars
 	@echo ****************************************************
 	-mkdir -p ${REPO}
 	-mkdir -p ${DIR_NETPIXI}
+	-mkdir -p ${DIR_NETPIXI}/log
 	-mkdir -p ${PREFIX}/www/netpixi/
 	
 	# CLONE REPO, COPY NECESSARY FILES TO INSTALL AREA.
@@ -78,25 +79,35 @@ install: is-root output-vars
 	-cp -R   ${REPO}/netpixi/doc       ${DIR_NETPIXI}
 	-cp -R   ${REPO}/netpixi/etc       ${DIR_NETPIXI}
 	-cp -R   ${REPO}/netpixi/www       ${DIR_NETPIXI}
-
 	
+	@echo
+	@echo ****************************************************
+	@echo
+	-rm /${CONF_INETD}
+	-rm /${PREFIX}/${CONF_DHCPD}
+			
 	# CREATE WEB INTERFACE SYMLINKS
 	@echo 
 	@echo ****************************************************
-	-ln -s ${DIR_NETPIXI}/netpixi/bin  ${PREFIX}/www/netpixi/bin
-	-ln -s ${DIR_NETPIXI}/netpixi/data ${PREFIX}/www/netpixi/data
+	@echo
+	-ln -s   ${DIR_NETPIXI}/netpixi/bin  ${PREFIX}/www/netpixi/bin
+	-ln -s   ${DIR_NETPIXI}/netpixi/data ${PREFIX}/www/netpixi/data
 	
+	@echo
 	# CREATE CONF/RC.D SYMLINKS
-	-rm /${CONF_INETD}
-	-ln -s ${DIR_NETPIXI}/${CONF_INETD}   /${CONF_INETD}
-	-rm /${PREFIX}/${CONF_DHCPD}
-	-ln -s ${DIR_NETPIXI}/${CONF_DHCPD}   /${PREFIX}/${CONF_DHCPD}
-	-ln -s ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
-	-ln -s ${DIR_NETPIXI}/${RCD_NETPIXI}  /${PREFIX}/${RCD_NETPIXI}
+	-ln -s   ${DIR_NETPIXI}/${CONF_INETD}   /${CONF_INETD}
+	-ln -s   ${DIR_NETPIXI}/${CONF_DHCPD}   /${PREFIX}/${CONF_DHCPD}
+	-ln -s   ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
+	-ln -s   ${DIR_NETPIXI}/${RCD_NETPIXI}  /${PREFIX}/${RCD_NETPIXI}
 	
+	@echo
 	# CREATE TFTPBOOT SYMLINK
-	-ln -s ${DIR_NETPIXI}/bootstrap /tftpboot ;
+	-ln -s   ${DIR_NETPIXI}/bootstrap       /tftpboot
 	
+	# CREATE LOG DIRECTORY SYMLINK
+	-ln -s   ${DIR_NETPIXI}/log             /var/log/netpixi
+	
+	@echo
 	@echo Add the following lines to your rc.conf:
 	@echo
 	@cat ${DIR_NETPIXI}/${CONF_RC}
