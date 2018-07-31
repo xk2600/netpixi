@@ -88,7 +88,7 @@ install-packages: ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TC
 ${PREFIX}/www/netpixi:
 	# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
 	@echo 
-	@echo >>>> linkin ${PREFIX}/www/netpixi/{bin,data}...
+	@echo  linkin ${PREFIX}/www/netpixi/{bin,data}...
 	@mkdir -p ${PREFIX}/www/netpixi/
 	ln -s ${DIR_NETPIXI}/netpixi/bin  ${PREFIX}/www/netpixi/bin
 	ln -s ${DIR_NETPIXI}/netpixi/data ${PREFIX}/www/netpixi/data
@@ -97,7 +97,7 @@ ${DIR_NETPIXI}:
 	# INSTALL NETPIXI TO CORRECT PATH
 	@mkdir -p ${DIR_NETPIXI}
 	@echo 
-	@echo ">>>> Copying ${REPO}/.* to ${DIR_NETPIXI} :"
+	@echo " Copying ${REPO}/.* to ${DIR_NETPIXI} :"
 	@cp -R ${REPO}/.* ${DIR_NETPIXI}
 
 .PHONY: install-netpixi
@@ -106,20 +106,20 @@ install-netpixi: ${DIR_NETPIXI}
 # BACKUP AND SYMLINK inetd.conf
 /${CONF_INETD}.original:
 	echo 
-	echo ">>>> ${.target}: "
+	echo " ${.target}: "
 	mv /${CONF_INETD} /${CONF_INETD}.original
 	ln -s ${DIR_NETPIXI}/${CONF_INETD}   /${CONF_INETD}
 
 # BACKUP AND SYMLINK dhcpd.conf
 /${PREFIX}/${CONF_DHCPD}.original:
 	echo 
-	echo ">>>> ${.target}: "
+	echo " ${.target}: "
 	mv /${PREFIX}/${CONF_DHCPD} /${PREFIX}/${CONF_DHCPD}.original
 	ln -s ${DIR_NETPIXI}/${CONF_DHCPD}   /${PREFIX}/${CONF_DHCPD}
 
 # SYMLINK netpixi.conf
 /${PREFIX}/${CONF_NETPIXI}:
-	echo ">>>> ${.target}: "
+	echo " ${.target}: "
 	ln -s ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
 
 /${PREFIX}/${RCD_NETPIXI}:
@@ -127,7 +127,7 @@ install-netpixi: ${DIR_NETPIXI}
 
 .PHONY: create-symlinks
 create-symlinks: ${PREFIX}/www/netpixi
-	@echo ">>>> /tftproot: "
+	@echo " /tftproot: "
 	# create tftproot symlink to netpixi/bootstrap
 	mv /tftproot /tftproot.old
 	ln -s ${DIR_NETPIXI}/bootstrap /tftproot
