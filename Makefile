@@ -41,6 +41,7 @@ all:
 	@echo "        target: install, install-packages,"
 	@echo "                uninstall, uninstall-packages,"
 	@echo "                update"
+	@echo 
 	
 .PHONY: is-root
 is-root:
@@ -62,9 +63,7 @@ install: is-root
 	@echo
 	@echo ****************************************************
 	-mkdir -p ${DIR_NETPIXI}
-	-cd ${DIR_NETPIXI}
-	-git clone ${REMOTE_REPO}
-	-cp -R ${REPO}/.* ${DIR_NETPIXI}
+	-cd ${DIR_NETPIXI} ; git clone ${REMOTE_REPO}
 	
 	# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
 	@echo 
