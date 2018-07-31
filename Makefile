@@ -57,13 +57,6 @@ repo-defined:
 
 #### INSTALL PACKAGES #########################################################
 
-.PHONY: pkg-header
-pkg-header:
-	echo
-	echo ***********************************************************
-	echo ******* Checking Packages: 
-
-
 ${PKG_CAROOT}:
 	echo pkg required: ca_root_nss
 
@@ -86,17 +79,11 @@ ${PKG_TCLLIB}:
 	echo pkg required: tcllib
 
 .PHONY: install-packages
-install-packages: pkg-header ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TCLLIB}
+install-packages: ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TCLLIB}
 
 ################################################ END INSTALL PACKAGES #########
 
 #### NETPIXI INSTALLATION #####################################################
-
-.PHONY: netpixi-header
-netpixi-header:
-	@echo 
-	@echo ***********************************************************
-	@echo ******* Installing netPixi: 
 
 ${PREFIX}/www/netpixi:
 	dd# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
@@ -158,19 +145,10 @@ create-symlinks: ${PREFIX}/www/netpixi
 
 	
 install: install-packages install-netpixi create-symlinks
-	@echo 
-	@echo ******* Packages installed 
-	@echo ***********************************************************
 
 ################################################ END NETPIXI INSTALLATION #####
 
 #### FETCH NETPIXI REPO #######################################################
-
-.PHONY: netpixi-header
-netpixi-header:
-	@echo 
-	@echo ***********************************************************
-	@echo ******* Fetching Repository: 
 
 ${REPO}/netpixi:
 	# CLONE REMOTE REPO INTO LOCAL REPOSITORY
@@ -184,9 +162,6 @@ remote: is-root repo-defined fetch-repo-header ${PKG_CAROOT} ${PKG_GIT} ${REPO}/
 	# AFTER GRABBING THE MOST RECENT VERSION. 
 	#fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh	
 	#git remote add upstream https://github.com/xk2600/netpixi.git
-	@echo 
-	@echo ******* Repository Ready. 
-	@echo ***********************************************************
 	
 ################################################ END FETCH REPO ###############
 
