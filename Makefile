@@ -86,7 +86,7 @@ install-packages: ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TC
 #### NETPIXI INSTALLATION #####################################################
 
 ${PREFIX}/www/netpixi:
-	dd# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
+	# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
 	@echo 
 	@echo >>>> linkin ${PREFIX}/www/netpixi/{bin,data}...
 	@mkdir -p ${PREFIX}/www/netpixi/
