@@ -127,10 +127,7 @@ install-netpixi: ${DIR_NETPIXI}
 
 .PHONY: create-symlinks
 create-symlinks: ${PREFIX}/www/netpixi
-	@echo " /tftproot: "
-	# create tftproot symlink to netpixi/bootstrap
-	mv /tftproot /tftproot.old
-	ln -s ${DIR_NETPIXI}/bootstrap /tftproot
+	ln -s ${DIR_NETPIXI}/bootstrap /tftpboot
 	@echo
 	@echo *************************************************************
 	@echo * MAKE SURE YOU VERIFY NOTHING IMPORTANT IS IN TFTPROOT.OLD *
