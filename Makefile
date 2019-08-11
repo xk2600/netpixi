@@ -47,11 +47,15 @@ continue:
 .PHONY: repo-defined
 repo-defined:
 .ifndef REPO
-	while [ 1 == 1 ] ; do printf "Repository Location? (~) " ; read REPO ; \
-	  [ "x$${REPO}x" == "xx" ] && REPO="~" ; [ -d $${REPO} ] && break || echo "$${REPO} is not a directory or does not exist." ; \
-	done ; \
-	/usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote ; \
+	printf "\n\n**** REPOSITORY LOCATION MUST BE DEFINED PRIOR TO MAKING ****\n"
+	printf "  REPO=/path/to/location/for/repository\n"
+	printf "  /usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote\n\n"
 	exit 0
+	#while [ 1 == 1 ] ; do printf "Repository Location? (~) " ; read REPO ; \
+	#  [ "x$${REPO}x" == "xx" ] && REPO="~" ; [ -d $${REPO} ] && break || echo "$${REPO} is not a directory or does not exist." ; \
+	#done ; \
+	#/usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote ; \
+	#exit 0
 .endif
 
 ################################################ END GENERIC TARGETS ##########
