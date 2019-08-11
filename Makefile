@@ -160,7 +160,7 @@ create-symlinks: ${PREFIX}/www/netpixi
 	@printf "\n\n"
 
 	
-install: install-packages install-netpixi create-symlinks
+install: netpixi-header install-packages install-netpixi create-symlinks
 	printf "\n\n"
 	printf "******* Packages installed \n"
 	printf "***********************************************************\n"
@@ -169,8 +169,8 @@ install: install-packages install-netpixi create-symlinks
 
 #### FETCH NETPIXI REPO #######################################################
 
-.PHONY: netpixi-header
-netpixi-header:
+.PHONY: fetch-repo-header
+fetch-repo-header:
 	printf "\n\n"
 	printf "***********************************************************"
 	printf "******* Fetching Repository: \n"
@@ -182,7 +182,7 @@ ${REPO}/netpixi:
 	@printf "${REPO}/netpixi: "
 	git clone ${REMOTE_REPO}
 
-remote: is-root repo-defined ${PKG_CAROOT} ${PKG_GIT} ${REPO}/netpixi
+remote: is-root repo-defined fetch-repo-header ${PKG_CAROOT} ${PKG_GIT} ${REPO}/netpixi
 	# CALL REMOTE INSTALL SCRIPT... WHICH REALLY JUST EXECUTES THIS MAKEFILE AGAIN
 	# AFTER GRABBING THE MOST RECENT VERSION. 
 	#fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh	
