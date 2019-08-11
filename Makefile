@@ -139,7 +139,7 @@ install-netpixi: ${DIR_NETPIXI}
 	printf ">>>> ${.target}: \n"
 	ln -s ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
 
-/${PREFIX}/${CONF_NETPIXI}:
+/${PREFIX}/${RCD_NETPIXI}:
 	ln -s ${DIR_NETPIXI}/${RCD_NETPIXI}  /${PREFIX}/${RCD_NETPIXI}
 
 .PHONY: create-symlinks
