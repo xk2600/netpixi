@@ -33,27 +33,27 @@ REMOTE_REPO	=  "https://github.com/xk2600/netpixi.git"
 .PHONY: all
 all:
 	# DEFAULT MAKE
-	echo no builds required. 'make remote' or 'make install'
+	@echo no builds required. 'make remote' or 'make install'
 	
 .PHONY: is-root
 is-root:
-	[ "x`whoami`x" == "xrootx" ] || { echo "must be root. please try again..." ; exit -1 ; } 
+	@[ "x`whoami`x" == "xrootx" ] || { echo "must be root. please try again..." ; exit -1 ; } 
 
 .PHONY: continue
 continue:
-	while [ 1 == 1 ] ;  do printf "Continue? (y,n) " ; read Q ; \
+	@while [ 1 == 1 ] ;  do printf "Continue? (y,n) " ; read Q ; \
 	  [ "x$${Q}x" == "xyx" ] && break ; [ "x$${Q}x" == "xnx" ] && quit -1 ; printf "...Not an option.\n Again, " ; done ; \
 
 .PHONY: repo-defined
 repo-defined:
-.ifndef REPO
-	@.error "REPOSITORY LOCATION MUST BE DEFINED PRIOR TO MAKING ****\n  REPO=/path/to/location/for/repository\n  /usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote\n\n"
+. ifndef REPO
+.   error "REPOSITORY LOCATION MUST BE DEFINED PRIOR TO MAKING ****\n  REPO=/path/to/location/for/repository\n  /usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote\n\n"
 	#while [ 1 == 1 ] ; do printf "Repository Location? (~) " ; read REPO ; \
 	#  [ "x$${REPO}x" == "xx" ] && REPO="~" ; [ -d $${REPO} ] && break || echo "$${REPO} is not a directory or does not exist." ; \
 	#done ; \
 	#/usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote ; \
 	#exit 0
-.endif
+. endif
 
 ################################################ END GENERIC TARGETS ##########
 
@@ -61,12 +61,13 @@ repo-defined:
 
 .PHONY: pkg-header
 pkg-header:
-	printf "\n\n"
-	printf "***********************************************************"
-	printf "******* Installing Packages: \n"
+	@printf "\n\n"
+	@printf "***********************************************************"
+	@printf "******* Installing Packages: \n"
 
 ${PKG_BOOTSTRAP}:
-	env ASSUME_ALWAYS_YES=YES pkg bootstrap
+	@printf "\n\n>>>> Bootstrapping pkg...
+	@env ASSUME_ALWAYS_YES=YES pkg bootstrap
 
 ${PKG_CAROOT}:
 	pkg install ca_root_nss
@@ -91,22 +92,24 @@ ${PKG_TCLLIB}: ${PKG_BOOTSTRAP}
 
 .PHONY: install-packages
 install-packages: pkg-header ${PKG_SUDO} ${PKG_LIGHTTPD} ${PKG_NETSNMP} ${PKG_TCL} ${PKG_TCLLIB}
-	printf "\n\n"
-	printf "******* Packages installed \n"
-	printf "***********************************************************\n"
+	@printf "\n\n"
+	@printf "******* Packages installed \n"
+	@printf "***********************************************************\n"
 ################################################ END INSTALL PACKAGES #########
 
 #### NETPIXI INSTALLATION #####################################################
 
 .PHONY: netpixi-header
 netpixi-header:
-	printf "\n\n"
-	printf "***********************************************************"
-	printf "******* Installing netPixi: \n"
+	@printf "\n\n"
+	@printf "***********************************************************"
+	@printf "******* Installing netPixi: \n"
 
 ${PREFIX}/www/netpixi:
 	# CREATE DIRECTORY STRUCTURE FOR ${PREFIX}/www/netpixi/{bin,data}
-	mkdir -p ${PREFIX}/www/netpixi/
+	@printf "\n\n"
+	@printf ">>>> linkin ${PREFIX}/www/netpixi/{bin,data}...
+	@mkdir -p ${PREFIX}/www/netpixi/
 	ln -s ${DIR_NETPIXI}/netpixi/bin  ${PREFIX}/www/netpixi/bin
 	ln -s ${DIR_NETPIXI}/netpixi/data ${PREFIX}/www/netpixi/data
 
@@ -122,22 +125,22 @@ install-netpixi: ${DIR_NETPIXI}
 
 # BACKUP AND SYMLINK inetd.conf
 /${CONF_INETD}.original:
-	printf "\n\n"
-	printf ">>>> ${.target}: \n"
+	@printf "\n\n"
+	@printf ">>>> ${.target}: \n"
 	mv /${CONF_INETD} /${CONF_INETD}.original
 	ln -s ${DIR_NETPIXI}/${CONF_INETD}   /${CONF_INETD}
 
 # BACKUP AND SYMLINK dhcpd.conf
 /${PREFIX}/${CONF_DHCPD}.original:
-	printf "\n\n"
-	printf ">>>> ${.target}: \n"
+	@printf "\n\n"
+	@printf ">>>> ${.target}: \n"
 	mv /${PREFIX}/${CONF_DHCPD} /${PREFIX}/${CONF_DHCPD}.original
 	ln -s ${DIR_NETPIXI}/${CONF_DHCPD}   /${PREFIX}/${CONF_DHCPD}
 
 # SYMLINK netpixi.conf
 /${PREFIX}/${CONF_NETPIXI}:
-	printf "\n\n"
-	printf ">>>> ${.target}: \n"
+	@printf "\n\n"
+	@printf ">>>> ${.target}: \n"
 	ln -s ${DIR_NETPIXI}/${CONF_NETPIXI} /${PREFIX}/${CONF_NETPIXI}
 
 /${PREFIX}/${RCD_NETPIXI}:
@@ -162,9 +165,9 @@ create-symlinks: ${PREFIX}/www/netpixi
 
 	
 install: netpixi-header install-packages install-netpixi create-symlinks
-	printf "\n\n"
-	printf "******* Packages installed \n"
-	printf "***********************************************************\n"
+	@printf "\n\n"
+	@printf "******* Packages installed \n"
+	@printf "***********************************************************\n"
 
 ################################################ END NETPIXI INSTALLATION #####
 
@@ -172,9 +175,9 @@ install: netpixi-header install-packages install-netpixi create-symlinks
 
 .PHONY: fetch-repo-header
 fetch-repo-header:
-	printf "\n\n"
-	printf "***********************************************************"
-	printf "******* Fetching Repository: \n"
+	@printf "\n\n"
+	@printf "***********************************************************"
+	@printf "******* Fetching Repository: \n"
 
 ${REPO}/netpixi:
 	# CLONE REMOTE REPO INTO LOCAL REPOSITORY
@@ -188,9 +191,9 @@ remote: is-root repo-defined fetch-repo-header ${PKG_CAROOT} ${PKG_GIT} ${REPO}/
 	# AFTER GRABBING THE MOST RECENT VERSION. 
 	#fetch -qo - https://raw.githubusercontent.com/xk2600/netpixi/master/.install | /bin/sh	
 	#git remote add upstream https://github.com/xk2600/netpixi.git
-	printf "\n\n"
-	printf "******* Repository Ready. \n"
-	printf "***********************************************************\n"
+	@printf "\n\n"
+	@printf "******* Repository Ready. \n"
+	@printf "***********************************************************\n"
 	
 ################################################ END FETCH REPO ###############
 
