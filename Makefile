@@ -65,7 +65,7 @@ pkg-header:
 	printf "******* Installing Packages: \n"
 
 ${PKG_BOOTSTRAP}
-	env AS
+	env ASSUME_ALWAYS_YES=YES pkg bootstrap
 
 ${PKG_CAROOT}:
 	pkg install ca_root_nss
