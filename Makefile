@@ -47,7 +47,8 @@ continue:
 .PHONY: repo-defined
 repo-defined:
 . ifndef REPO
-.   error "REPOSITORY LOCATION MUST BE DEFINED PRIOR TO MAKING ****\n  REPO=/path/to/location/for/repository\n  /usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote\n\n"
+	printf "REPOSITORY LOCATION MUST BE DEFINED PRIOR TO MAKING ****\n  REPO=/path/to/location/for/repository\n  /usr/bin/fetch -qo - ${REMOTE_MAKEFILE} | REPO=${REPO} /usr/bin/make -f - remote\n\n"
+	.error "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 	#while [ 1 == 1 ] ; do printf "Repository Location? (~) " ; read REPO ; \
 	#  [ "x$${REPO}x" == "xx" ] && REPO="~" ; [ -d $${REPO} ] && break || echo "$${REPO} is not a directory or does not exist." ; \
 	#done ; \
