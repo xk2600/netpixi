@@ -64,7 +64,7 @@ pkg-header:
 	printf "***********************************************************"
 	printf "******* Installing Packages: \n"
 
-${PKG_BOOTSTRAP}
+${PKG_BOOTSTRAP}:
 	env ASSUME_ALWAYS_YES=YES pkg bootstrap
 
 ${PKG_CAROOT}:
